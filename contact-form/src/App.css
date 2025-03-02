@@ -1,0 +1,224 @@
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f7f7f7;
+  color: #333;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* App Container */
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Header Styles */
+.App-header {
+  background-color: #282c34;
+  color: #fff;
+  padding: 40px 20px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.App-header h1 {
+  font-size: 3rem;
+  letter-spacing: 2px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* LoginPage Styles */
+.login-container {
+  background-color: #ffffff;
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.login-container:hover {
+  transform: translateY(-5px);
+}
+
+.login-container h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.login-container label {
+  display: block;
+  margin: 10px 0;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.login-container input {
+  padding: 10px;
+  margin: 10px 0;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.login-container button {
+  background-color: #61dafb;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 20px;
+}
+
+.login-container button:hover {
+  background-color: #21a1f1;
+  transform: scale(1.05);
+}
+
+.login-container button:active {
+  transform: scale(1);
+}
+
+/* QuizPage Styles */
+.quiz-container {
+  background-color: #ffffff;
+  max-width: 700px;
+  width: 100%;
+  padding: 40px;
+  margin: 20px;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  animation: fadeIn 1s ease-out;
+}
+
+.quiz-container h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+  font-weight: 600;
+}
+
+.question {
+  margin-bottom: 20px;
+}
+
+.question h3 {
+  font-size: 1.3rem;
+  color: #444;
+}
+
+label {
+  display: block;
+  margin: 10px 0;
+  font-size: 1.1rem;
+}
+
+input[type="radio"] {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+button {
+  background-color: #61dafb;
+  border: none;
+  padding: 15px 25px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #21a1f1;
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(1);
+}
+
+/* ResultPage Styles */
+.result-container {
+  background-color: #282c34;
+  color: white;
+  padding: 30px;
+  font-size: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  margin-top: 20px;
+  text-align: center;
+}
+
+.result-container h3 {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.result-container p {
+  margin: 10px 0;
+}
+
+/* Keyframes for Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+  .App-header h1 {
+    font-size: 2.5rem;
+  }
+
+  .login-container,
+  .quiz-container {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .login-container h2,
+  .quiz-container h2 {
+    font-size: 1.5rem;
+  }
+
+  .login-container input,
+  .login-container button {
+    font-size: 1rem;
+  }
+
+  .quiz-container h2 {
+    font-size: 1.5rem;
+  }
+}
