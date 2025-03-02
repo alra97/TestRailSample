@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -14,23 +14,26 @@ function QuizPage() {
   const navigate = useNavigate();
 
   const handleAnswer = (answer) => {
-    setUserAnswers([...userAnswers, answer]);
+    setUserAnswers((prevAnswers) => [...prevAnswers, answer]);
+
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
       const endTime = new Date();
       const timeTaken = Math.round((endTime - startTime) / 1000); // in seconds
-      const score = userAnswers.filter((answer, index) => answer === questions[index].answer).length;
-      
-      // Save score to backend
-      const userId = localStorage.getItem('userId');
-      axios.post('http://localhost:5000/submit-score', { userId, score, time: timeTaken })
-        .then(() => {
-          navigate('/result');
-        })
-        .catch((err) => {
-          console.error('Error submitting score:', err);
-        });
+
+      const score = userAnswers.filter((answer, index) => {
+        return questions[index] && answer === questions[index].answer;
+      }).length;
+
+      // Save score and time to localStorage
+      localStorage.setItem('score', score);
+      localStorage.setItem('time', timeTaken);
+
+      // Optionally, you can also send this data to the backend, if necessary
+
+      // Navigate to the result page
+      navigate('/result');
     }
   };
 

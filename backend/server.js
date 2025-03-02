@@ -1,6 +1,5 @@
 const express = require('express');
 const mysql = require('mysql');
-const bcrypt = require('bcrypt');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
@@ -28,32 +27,25 @@ db.connect((err) => {
 });
 
 // Register a new user
-app.post('/register', async (req, res) => {
+app.post('/register', (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
     return res.status(400).send('Username and password are required');
   }
 
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10); // Hash password with 10 salt rounds
-
-    const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
-    db.query(query, [username, hashedPassword], (err, result) => {
-      if (err) {
-        console.error('Error inserting user:', err);
-        return res.status(500).send('Error registering user');
-      }
-      res.status(201).send('User registered successfully');
-    });
-  } catch (err) {
-    console.error('Error hashing password:', err);
-    res.status(500).send('Error registering user');
-  }
+  const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
+  db.query(query, [username, password], (err, result) => {
+    if (err) {
+      console.error('Error inserting user:', err);
+      return res.status(500).send('Error registering user');
+    }
+    res.status(201).send('User registered successfully');
+  });
 });
 
 // Login user
-app.post('/login', async (req, res) => {
+app.post('/login', (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
@@ -61,7 +53,7 @@ app.post('/login', async (req, res) => {
   }
 
   const query = 'SELECT * FROM users WHERE username = ?';
-  db.query(query, [username], async (err, result) => {
+  db.query(query, [username], (err, result) => {
     if (err) {
       console.error('Error querying database:', err);
       return res.status(500).send('Internal server error');
@@ -73,20 +65,41 @@ app.post('/login', async (req, res) => {
 
     const user = result[0];
 
-    try {
-      const isPasswordValid = await bcrypt.compare(password, user.password); // Compare the password with the hashed password
-      if (!isPasswordValid) {
-        return res.status(400).send('Invalid credentials');
-      }
+    // Compare plain text password
+    if (user.password !== password) {
+      return res.status(400).send('Invalid credentials');
+    }
 
-      // Successfully logged in
-      res.status(200).json({ id: user.id, username: user.username });
-    } catch (err) {
-      console.error('Error comparing password:', err);
-      res.status(500).send('Error during login');
+    // Successfully logged in
+    res.status(200).json({ id: user.id, username: user.username });
+  });
+});
+
+// Assuming you have already connected to your MySQL database
+
+// Endpoint to handle the score submission
+app.post('/submit-score', (req, res) => {
+  const { userId, score, time } = req.body;
+
+  if (!userId || score === undefined || time === undefined) {
+    return res.status(400).send('Missing required parameters');
+  }
+
+  const query = 'UPDATE scores SET score = ?, time_taken = ? WHERE user_id = ?';
+  db.query(query, [score, time, userId], (err, result) => {
+    if (err) {
+      console.error('Error updating score:', err);
+      return res.status(500).send('Error updating score');
+    }
+
+    if (result.affectedRows > 0) {
+      res.status(200).send('Score updated successfully');
+    } else {
+      res.status(400).send('User not found');
     }
   });
 });
+
 
 // Start the server
 app.listen(port, () => {
